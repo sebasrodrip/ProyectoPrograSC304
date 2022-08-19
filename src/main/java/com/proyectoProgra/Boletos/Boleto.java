@@ -1,20 +1,24 @@
 package com.proyectoProgra.Boletos;
+
 public class Boleto {
+
     private int NumeroBoleto;
     private String CiudadSalida;
     private String CiudadDestino;
     private String FechaDeUso;
     private String HoraDeSalida;
     private double PrecioTiquete;
-    
-    public Boleto(){
-        this.NumeroBoleto=0;
-        this.CiudadSalida="";
-        this.CiudadDestino="";
-        this.FechaDeUso="";
-        this.HoraDeSalida="";
-        this.PrecioTiquete=0.00;
-    }  
+    private int Tren;
+
+    public Boleto() {
+        this.NumeroBoleto = 0;
+        this.CiudadSalida = "";
+        this.CiudadDestino = "";
+        this.FechaDeUso = "";
+        this.HoraDeSalida = "";
+        this.PrecioTiquete = 0.00;
+        this.Tren = 0;
+    }
 
     public int getNumeroBoleto() {
         return NumeroBoleto;
@@ -63,6 +67,12 @@ public class Boleto {
     public void setPrecioTiquete(double PrecioTiquete) {
         this.PrecioTiquete = PrecioTiquete;
     }
-    
-    
+
+    public int getTren() {
+        return Tren;
+    }
+
+    public void setTren(int Tren) {
+        this.Tren = Tren;
+    }
 }

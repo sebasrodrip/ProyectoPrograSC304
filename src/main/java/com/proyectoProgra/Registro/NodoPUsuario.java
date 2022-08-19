@@ -1,11 +1,12 @@
 package com.proyectoProgra.Registro;
+
 public class NodoPUsuario {
-    
+
     private Usuario dato;
     private NodoPUsuario siguiente;
-    
-    public NodoPUsuario(){
-        this.siguiente=null;
+
+    public NodoPUsuario() {
+        this.siguiente = null;
     }
 
     public Usuario getDato() {
@@ -23,6 +24,5 @@ public class NodoPUsuario {
     public void setSiguiente(NodoPUsuario siguiente) {
         this.siguiente = siguiente;
     }
-    
-    
+
 }

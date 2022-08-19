@@ -31,9 +31,8 @@ public class Menu {
             System.exit(0);
         }
     }
-    
-    
-    private String[] opciones2 = {"1.Agregar Boleto", "2.Modificar Boleto", "3.Eliminar Boleto","4.Mostrar Boletos","5.Volver"};
+
+    private String[] opciones2 = {"1.Agregar Boleto", "2.Modificar Boleto", "3.Eliminar Boleto", "4.Mostrar Boletos", "5.Volver"};
 
     public void mostrarMenuBoletos() {
         String opc = (String) JOptionPane.showInputDialog(null, "Seleccione su opcion:", "Menu principal", JOptionPane.QUESTION_MESSAGE, null, opciones2, opciones2[0]);
@@ -47,10 +46,10 @@ public class Menu {
         } else if (opc.equals("3.Eliminar Boleto")) {
             b.EliminarBoleto();
             mostrarMenuBoletos();
-        }else if(opc.equals("4.Mostrar Boletos")){
+        } else if (opc.equals("4.Mostrar Boletos")) {
             b.MostrarBoletos();
             mostrarMenuBoletos();
-        }else if (opc.equals("5.Volver")) {
+        } else if (opc.equals("5.Volver")) {
             mostrarMenuPrincipal();
         }
     }

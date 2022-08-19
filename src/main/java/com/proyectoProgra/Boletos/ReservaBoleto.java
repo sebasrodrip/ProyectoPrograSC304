@@ -2,12 +2,14 @@ package com.proyectoProgra.Boletos;
 
 import java.util.ArrayList;
 import com.github.javafaker.Faker;
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 public class ReservaBoleto {
 
     private ArrayList<Boleto> boletos = new ArrayList();
     Faker faker = new Faker();
+    Random random = new Random();
 
     public void AsignarBoleto() {
         int seguir = 0;
@@ -20,6 +22,7 @@ public class ReservaBoleto {
             bol.setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la fecha de salida(dd-MM-AA): "));
             bol.setHoraDeSalida(JOptionPane.showInputDialog(null, "Ingrese la hora de salida(hh:mm): "));
             bol.setPrecioTiquete(Double.parseDouble(faker.commerce().price()));
+            bol.setTren(NumeroTren());
             //Se agrega el boleto al ArrayList
             boletos.add(bol);
 
@@ -37,6 +40,7 @@ public class ReservaBoleto {
             for (int x = 0; x < boletos.size(); x++) {
                 JOptionPane.showMessageDialog(null, "***BOLETOS DISPONIBLES***\n\n"
                         + "BOLETO # " + boletos.get(x).getNumeroBoleto()
+                        + "\nTREN # " + boletos.get(x).getTren()
                         + "\nSALIDA: " + boletos.get(x).getCiudadSalida()
                         + "\nDESTINO: " + boletos.get(x).getCiudadDestino()
                         + "\nFECHA DE SALIDA: " + boletos.get(x).getFechaDeUso()
@@ -52,7 +56,7 @@ public class ReservaBoleto {
         for (int x = 0; x < boletos.size(); x++) {
             if (busqueda == boletos.get(x).getNumeroBoleto()) {
                 int opc;
-                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas"));
+                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas" + "\n4. No Tren"));
                 if (opc == 1) {
                     cambio = boletos.get(x).getFechaDeUso();
                     boletos.get(x).setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la nueva fecha de salida: "));
@@ -68,6 +72,10 @@ public class ReservaBoleto {
                     boletos.get(x).setHoraDeSalida(JOptionPane.showInputDialog(null, "Ingrese la nueva hora de salida: "));
                     JOptionPane.showMessageDialog(null, "Se cambio la fecha: " + cambio + " a: " + boletos.get(x).getFechaDeUso()
                             + "\nSe cambio la hora: " + cambio + " a: " + boletos.get(x).getHoraDeSalida());
+                } else if (opc == 4) {
+                    int cambioTren = boletos.get(x).getTren();
+                    boletos.get(x).setTren(Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el nuevo # de Tren: ")));
+                    JOptionPane.showMessageDialog(null, "Se cambio el # de Tren: " + cambioTren + " a: " + boletos.get(x).getTren());
                 } else {
                     JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
                 }
@@ -92,5 +100,14 @@ public class ReservaBoleto {
                 }
             }
         }
+    }
+
+    public int NumeroTren() {
+        int min = 1;
+        int max = 10;
+
+        int valor = random.nextInt(max + min) + min;
+
+        return valor;
     }
 }

@@ -19,8 +19,10 @@ public class ReservaBoleto {
             bol.setNumeroBoleto(Integer.parseInt(faker.address().streetAddressNumber()));
             bol.setCiudadSalida(faker.address().cityName());
             bol.setCiudadDestino(faker.address().cityName());
-            bol.setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la fecha de salida(dd-MM-AA): "));
-            bol.setHoraDeSalida(JOptionPane.showInputDialog(null, "Ingrese la hora de salida(hh:mm): "));
+            bol.setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la fecha de salida(dd-MM-AA) para el boleto: "+bol.getNumeroBoleto()+
+                    "\nque sale desde: "+bol.getCiudadSalida()+" va hacia: "+bol.getCiudadDestino()));
+            bol.setHoraDeSalida(JOptionPane.showInputDialog(null, "Ingrese la hora de salida(hh:mm) para el boleto: "+bol.getNumeroBoleto()+
+                    "\nque sale desde: "+bol.getCiudadSalida()+" va hacia: "+bol.getCiudadDestino()));
             bol.setPrecioTiquete(Double.parseDouble(faker.commerce().price()));
             bol.setTren(NumeroTren());
             //Se agrega el boleto al ArrayList
@@ -56,7 +58,7 @@ public class ReservaBoleto {
         for (int x = 0; x < boletos.size(); x++) {
             if (busqueda == boletos.get(x).getNumeroBoleto()) {
                 int opc;
-                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas" + "\n4. No Tren"));
+                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas" + "\n4. # Tren"));
                 if (opc == 1) {
                     cambio = boletos.get(x).getFechaDeUso();
                     boletos.get(x).setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la nueva fecha de salida: "));

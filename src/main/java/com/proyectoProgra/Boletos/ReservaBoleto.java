@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class ReservaBoleto {
 
-    private ArrayList<Boleto> boletos = new ArrayList();
+    public ArrayList<Boleto> boletos = new ArrayList();
     Faker faker = new Faker();
     Random random = new Random();
 

@@ -1,4 +1,4 @@
-package com.proyectoProgra.Boletos;
+package com.proyectoProgra.Reserva;
 
 public class Boleto {
 

@@ -1,4 +1,4 @@
-package com.proyectoProgra.Registro;
+package com.proyectoProgra.Reserva;
 
 public class NodoPUsuario {
 

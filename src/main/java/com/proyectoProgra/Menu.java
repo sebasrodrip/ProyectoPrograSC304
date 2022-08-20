@@ -1,33 +1,34 @@
 package com.proyectoProgra;
 
-import com.proyectoProgra.Registro.Agregar;
-import com.proyectoProgra.Boletos.ReservaBoleto;
+import com.proyectoProgra.Reserva.*;
 import javax.swing.JOptionPane;
 
 public class Menu {
 
-    Agregar a = new Agregar();
-    ReservaBoleto b = new ReservaBoleto();
-    private String[] opciones = {"1.Registrar usuario", "3.Mostrar usuarios", "4.Boleteria", "5.Salir"};
+    Reserva r = new Reserva();
+
+    private String[] opciones = {"1.Registrar usuario", "2.Desactivar Usuarios","3.Mostrar usuarios", "4.Boleteria", "5.Pasajero", "6.Salir"};
 
     public void mostrarMenuPrincipal() {
         String opc = (String) JOptionPane.showInputDialog(null, "Seleccione su opcion:", "Menu principal", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
 
         if (opc.equals("1.Registrar usuario")) {
-            a.AgregarNuevoUsuario();
+            r.AgregarNuevoUsuario();
             mostrarMenuPrincipal();
-        } //        else if(opc.equals("2. Desactivar usuarios")){
-        //            p.desactivar();
-        //            mostrarMenu();
-        //        }
-        else if (opc.equals("3.Mostrar usuarios")) {
-            a.mostrarUsuario();
+        } else if (opc.equals("2.Desactivar Usuarios")) {
+            r.DesactivarUsuario();
             mostrarMenuPrincipal();
-
+        } else if (opc.equals("3.Mostrar usuarios")) {
+            r.mostrarUsuario();
+            mostrarMenuPrincipal();
         } else if (opc.equals("4.Boleteria")) {
             mostrarMenuBoletos();
             mostrarMenuPrincipal();
-        } else if (opc.equals("5.Salir")) {
+        } else if (opc.equals("5.Pasajero")) {
+            mostrarMenuPasajeros();
+            mostrarMenuPrincipal();
+        }         
+        else if (opc.equals("6.Salir")) {
             System.exit(0);
         }
     }
@@ -38,17 +39,39 @@ public class Menu {
         String opc = (String) JOptionPane.showInputDialog(null, "Seleccione su opcion:", "Menu principal", JOptionPane.QUESTION_MESSAGE, null, opciones2, opciones2[0]);
 
         if (opc.equals("1.Agregar Boleto")) {
-            b.AsignarBoleto();
+            r.AsignarBoleto();
             mostrarMenuBoletos();
         } else if (opc.equals("2.Modificar Boleto")) {
-            b.ModificaBoleto();
+            r.ModificaBoleto();
             mostrarMenuBoletos();
         } else if (opc.equals("3.Eliminar Boleto")) {
-            b.EliminarBoleto();
+            r.EliminarBoleto();
             mostrarMenuBoletos();
         } else if (opc.equals("4.Mostrar Boletos")) {
-            b.MostrarBoletos();
+            r.MostrarBoletos();
             mostrarMenuBoletos();
+        } else if (opc.equals("5.Volver")) {
+            mostrarMenuPrincipal();
+        }
+    }
+
+    private String[] opciones3 = {"1.Registrar Boleto", "2.Modificar", "3.Eliminar", "4.Mostrar", "5.Volver"};
+
+    public void mostrarMenuPasajeros() {
+        String opc = (String) JOptionPane.showInputDialog(null, "Seleccione su opcion:", "Menu principal", JOptionPane.QUESTION_MESSAGE, null, opciones3, opciones3[0]);
+
+        if (opc.equals("1.Registrar Boleto")) {
+            r.AsignarPasajero();
+            mostrarMenuPasajeros();
+        } else if (opc.equals("2.Modificar")) {
+            r.CambioPasajero();
+            mostrarMenuPasajeros();
+        } else if (opc.equals("3.Eliminar")) {
+            r.EliminarPasajero();
+            mostrarMenuPasajeros();
+        } else if (opc.equals("4.Mostrar")) {
+            r.mostrarPasajero();
+            mostrarMenuPasajeros();
         } else if (opc.equals("5.Volver")) {
             mostrarMenuPrincipal();
         }

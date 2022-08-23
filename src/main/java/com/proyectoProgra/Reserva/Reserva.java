@@ -1,7 +1,9 @@
 package com.proyectoProgra.Reserva;
 
 import com.github.javafaker.Faker;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.JOptionPane;
 
@@ -10,18 +12,23 @@ public class Reserva {
     private ArrayList<Boleto> boletos = new ArrayList();
     private ArrayList<Pasajeros> pasajeros = new ArrayList();
     private ArrayList<Equipaje> equip = new ArrayList();
+    private ArrayList<Cajas> cajas = new ArrayList();
     Faker faker = new Faker();
     Random random = new Random();
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+    Date date = new Date();  
 
     double PrecioXKg = 0.6;
     double pesoM;
     double precioT = 0;
+    double ingresosT;
 
-    public NodoPUsuario cima;
+    private NodoPUsuario cima;
+    private NodoLESCompra inicioLES;
 
     public Reserva() {
         this.cima = null;
-
+        this.inicioLES=null;
     }
 
     public boolean esVacia() {
@@ -31,6 +38,14 @@ public class Reserva {
             return false;
         }
     }
+    
+    public boolean esVaciaLES(){
+      if(inicioLES==null){
+         return true;
+      }else{
+         return false;
+      }
+   }
 
     public void AgregarNuevoUsuario() {
         //Creacion del Usuario
@@ -353,7 +368,7 @@ public class Reserva {
             if (busqueda.equals(pasajeros.get(x).getNickp())) {
                 JOptionPane.showMessageDialog(null, "***PASAJERO " + pasajeros.get(x).getNickp() + "***"
                         + "\nBOLETO # " + pasajeros.get(x).getTicketp() + "\nMALETAS: " + pasajeros.get(x).getMaletasp() + "ID MALETAS:  " + pasajeros.get(x).getMaletasId()
-                        + "\nEQUIPAJE DE MANO: " + (pasajeros.get(x).isManop() ? "Si" : "No"));
+                        + "\nEQUIPAJE DE MANO: " + (pasajeros.get(x).isManop() ? "Si" : "No")+"\n-----------------------PRECIO TOTAL: "+String.format("2%f", pasajeros.get(x).getPrecioreserva())+"$");
             }
         }
 
@@ -385,10 +400,101 @@ public class Reserva {
                     equip.add(equi);
                     pasajeros.get(x).setMaletasp(equip.get(x).getEquipaje());
                     pasajeros.get(x).setMaletasId(equi.getIdEquipaje());
+                    pasajeros.get(x).setPrecioreserva(pasajeros.get(x).getPrecioreserva()+PrecioXKg);
                     JOptionPane.showMessageDialog(null, "¡Equipaje agregado exitosamente!",
                             "Datos agregados", JOptionPane.INFORMATION_MESSAGE);
                     seguir = 1;
                 }
+            }
+        }
+    }
+    //Transacciones
+    public void CompraReserva(){
+        Compra c=new Compra();
+        int salida =1;
+        do{
+            int opc = JOptionPane.showConfirmDialog(null, "Desea ver las reservas disponibles?",
+                    null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(opc==JOptionPane.YES_OPTION){
+                for(int x=0;x<pasajeros.size();x++){
+                    JOptionPane.showMessageDialog(null, "***PASAJERO " + pasajeros.get(x).getNickp() + "***"
+                        + "\nBOLETO # " + pasajeros.get(x).getTicketp() + "\nMALETAS: " + pasajeros.get(x).getMaletasp() + "ID MALETAS:  " + pasajeros.get(x).getMaletasId()
+                        + "\nEQUIPAJE DE MANO: " + (pasajeros.get(x).isManop() ? "Si" : "No"));
+                }
+                salida=0;
+            }else if(opc==JOptionPane.NO_OPTION){
+                salida=1;
+            }
+        }while(salida!=1);
+        String busqueda=JOptionPane.showInputDialog(null,"Ingrese el nick del pasajero que desea realizar la compra:");
+        for(int x=0;x<pasajeros.size();x++){
+            if(busqueda.equals(pasajeros.get(x).getNickp())){
+                int opc2=JOptionPane.showConfirmDialog(null, "Esta seguro que desea realizar la siguiente compra?"+
+                        "***PASAJERO " + pasajeros.get(x).getNickp() + "***"
+                        + "\nBOLETO # " + pasajeros.get(x).getTicketp() + "\nMALETAS: " + pasajeros.get(x).getMaletasp() + "ID MALETAS:  " + pasajeros.get(x).getMaletasId()
+                        + "\nEQUIPAJE DE MANO: " + (pasajeros.get(x).isManop() ? "Si" : "No")+"\n-----------------------PRECIO TOTAL: "+String.format("2%f", pasajeros.get(x).getPrecioreserva())+"$",null, JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if (opc2 == JOptionPane.YES_OPTION){
+                    c.setFechaHoy(formatter.format(date));
+                    c.setMontoT(pasajeros.get(x).getPrecioreserva());
+                    c.setNickCliente(pasajeros.get(x).getNickp());
+                } else if(opc2== JOptionPane.NO_OPTION){
+                    CompraReserva();
+                }
+            }
+        }
+        NodoLESCompra nuevo = new NodoLESCompra();
+        nuevo.setDato(c);
+        if(esVaciaLES()){
+            inicioLES=nuevo;
+        }else if(c.getMontoT()<inicioLES.getDato().getMontoT()){
+            nuevo.setSiguiente(inicioLES);
+            inicioLES=nuevo;
+        }else if(inicioLES.getSiguiente()==null){
+            inicioLES.setSiguiente(nuevo);
+        }else{
+            NodoLESCompra aux=inicioLES;
+            while((aux.getSiguiente()!=null)&&(aux.getSiguiente().getDato().getMontoT()<c.getMontoT())){
+                aux=aux.getSiguiente();
+            }
+            nuevo.setSiguiente(aux.getSiguiente());
+            aux.setSiguiente(nuevo);
+        }
+        JOptionPane.showMessageDialog(null, "Compra realizada con exito!");
+    }
+    
+    public void mostrarTransacciones(){
+        if(!esVaciaLES()){
+            String s="";
+            NodoLESCompra aux=inicioLES;
+            while(aux!=null){
+                s=s+"***FACTURA EMITIDA "+aux.getDato().getFechaHoy()+"***"+"\nNOMBRE DEL CLIENTE: "+aux.getDato().getNickCliente()+
+                        "\nMONTO PAGADO: "+aux.getDato().getMontoT()+"\n-------------------------";
+                aux=aux.getSiguiente();
+            }
+            JOptionPane.showMessageDialog(null, "La lista contiene:\n"+s);
+        }else{
+            JOptionPane.showMessageDialog(null, "Lista vacia!");
+        }
+        
+    }
+    
+    public void Ingresos(){
+        if(!cajas.isEmpty()){
+            Cajas caj=new Cajas();
+            if(!esVaciaLES()){
+                String s="";
+                NodoLESCompra aux=inicioLES;
+                while(aux!=null){
+                    for(int x=0;x<cajas.size();x++){
+                        caj.setClientesAtendidos(aux.getDato().getNickCliente());
+                        caj.setIngresos(aux.getDato().getMontoT());
+                        ingresosT=ingresosT+caj.getIngresos();
+                        s=s+caj.getClientesAtendidos()+"--";
+                        cajas.add(caj);
+                    }
+                    aux=aux.getSiguiente();
+                }
+                JOptionPane.showMessageDialog(null, "Ingresos del dia: "+formatter.format(date)+"\n"+s+"\nTOTAL: "+ingresosT);
             }
         }
     }

@@ -105,6 +105,7 @@ public class Reserva {
                     + "\nque sale desde: " + bol.getCiudadSalida() + " va hacia: " + bol.getCiudadDestino()));
             bol.setHoraDeSalida(JOptionPane.showInputDialog(null, "Ingrese la hora de salida(hh:mm) para el boleto: " + bol.getNumeroBoleto()
                     + "\nque sale desde: " + bol.getCiudadSalida() + " va hacia: " + bol.getCiudadDestino()));
+            bol.setTrenRapido(JOptionPane.showInputDialog(null, "Ingrese si  es tren rapido o no: " ));
             bol.setPrecioTiquete(Double.parseDouble(faker.commerce().price()));
             bol.setTren(NumeroTren());
             //Se agrega el boleto al ArrayList
@@ -129,11 +130,13 @@ public class Reserva {
                         + "\nDESTINO: " + boletos.get(x).getCiudadDestino()
                         + "\nFECHA DE SALIDA: " + boletos.get(x).getFechaDeUso()
                         + "\nHORA DE SALIDA: " + boletos.get(x).getHoraDeSalida()
+                        + "\nTren Rapido: " + boletos.get(x).getTrenRapido()
                         + "\n----------------------------------\n        PRECIO: " + boletos.get(x).getPrecioTiquete());
             }
         }
     }
 
+    
     public void ModificaBoleto() {
         int busqueda = 0;
         String cambio;
@@ -141,7 +144,7 @@ public class Reserva {
         for (int x = 0; x < boletos.size(); x++) {
             if (busqueda == boletos.get(x).getNumeroBoleto()) {
                 int opc;
-                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas" + "\n4. # Tren"));
+                opc = Integer.parseInt(JOptionPane.showInputDialog(null, "Que desea cambiar?\n1. Fecha\n2. Hora" + "\n3. Ambas" + "\n4. # Tren" + "\n5. # TrenRapido"));
                 if (opc == 1) {
                     cambio = boletos.get(x).getFechaDeUso();
                     boletos.get(x).setFechaDeUso(JOptionPane.showInputDialog(null, "Ingrese la nueva fecha de salida: "));
@@ -161,6 +164,10 @@ public class Reserva {
                     int cambioTren = boletos.get(x).getTren();
                     boletos.get(x).setTren(Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el nuevo # de Tren: ")));
                     JOptionPane.showMessageDialog(null, "Se cambio el # de Tren: " + cambioTren + " a: " + boletos.get(x).getTren());
+                } else if (opc == 5) {
+                    String cambioTrenRapido = boletos.get(x).getTrenRapido();
+                    boletos.get(x).setTren(Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese si el tren es rapido o no: ")));
+                    JOptionPane.showMessageDialog(null, "Se cambio si el tren es rapido o no: " + cambioTrenRapido + " a: " + boletos.get(x).getTrenRapido());
                 } else {
                     JOptionPane.showMessageDialog(null, "Opcion incorrecta!");
                 }

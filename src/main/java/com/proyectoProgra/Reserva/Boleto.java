@@ -7,6 +7,7 @@ public class Boleto {
     private String CiudadDestino;
     private String FechaDeUso;
     private String HoraDeSalida;
+    private String TrenRapido;
     private double PrecioTiquete;
     private int Tren;
 
@@ -16,6 +17,7 @@ public class Boleto {
         this.CiudadDestino = "";
         this.FechaDeUso = "";
         this.HoraDeSalida = "";
+        this.TrenRapido = "";
         this.PrecioTiquete = 0.00;
         this.Tren = 0;
     }
@@ -58,6 +60,14 @@ public class Boleto {
 
     public void setHoraDeSalida(String HoraDeSalida) {
         this.HoraDeSalida = HoraDeSalida;
+    }
+    
+    public String getTrenRapido() {
+        return HoraDeSalida;
+    }
+
+    public void setTrenRapido(String TrenRapido) {
+        this.TrenRapido = TrenRapido;
     }
 
     public double getPrecioTiquete() {
